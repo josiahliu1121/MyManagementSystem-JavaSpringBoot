@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.skytakeaway.server.mapper.SaleAttrMapper">
+    <!-- Batch insert properties values -->
+    <insert id="batchInsert" parameterType="java.util.List">
+        INSERT INTO sale_attr (spu_id, base_sale_attr_id, sale_attr_name)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.spuId}, #{item.baseSaleAttrId},#{item.saleAttrName})
+        </foreach>
+    </insert>
+</mapper>

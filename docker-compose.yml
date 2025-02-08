@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+  mysql-db:
+    image: mysql:8.0
+    container_name: mysql-db
+    restart: always
+    environment:
+      TZ: Asia/Malaysia
+      MYSQL_ROOT_PASSWORD: 123
+    networks:
+      - my-management-system-network
+    ports:
+      - "3306:3306"
+    volumes:
+      - my-management-system-data:/var/lib/mysql
+      - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  minio:
+    image: quay.io/minio/minio
+    container_name: minio
+    restart: always
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    command: server /data --console-address ":9001"
+    networks:
+      - my-management-system-network
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio-data:/data
+
+  spring-boot-backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    image: my-management-system-backend:latest
+    container_name: backend
+    restart: always
+    networks:
+      - my-management-system-network
+    ports:
+      - "8080:8080"
+
+  vue-frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    image: my-management-system-frontend:latest
+    container_name: vue-frontend
+    restart: always
+    networks:
+      - my-management-system-network
+    ports:
+      - "80:80"
+
+networks:
+  my-management-system-network:
+    driver: bridge
+
+volumes:
+  my-management-system-data:
+  minio-data:

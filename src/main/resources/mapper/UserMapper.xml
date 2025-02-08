@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.skytakeaway.server.mapper.UserMapper">
+    <delete id="batchDelete" parameterType="java.util.List">
+        DELETE FROM user WHERE id IN
+        <foreach collection="list" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <select id="pageQuery" parameterType="map" resultType="com.skytakeaway.pojo.entity.User">
+        SELECT * FROM user
+        <where>
+            <if test="userName != '' and userName != null">
+                and username like concat('%',#{userName},'%')
+            </if>
+        </where>
+    </select>
+</mapper>

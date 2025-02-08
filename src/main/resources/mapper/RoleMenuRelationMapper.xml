@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.skytakeaway.server.mapper.RoleMenuRelationMapper">
+    <!-- Batch insert-->
+    <insert id="batchInsert" parameterType="java.util.List">
+        INSERT INTO role_menu_relation (menu_id, role_id)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.menuId}, #{item.roleId})
+        </foreach>
+    </insert>
+
+    <select id="getByRoleIds" parameterType="java.util.List" resultType="com.skytakeaway.pojo.entity.RoleMenuRelation">
+        SELECT role_id, menu_id
+        FROM role_menu_relation
+        WHERE role_id IN
+        <foreach collection="list" item="roleId" open="(" separator="," close=")">
+            #{roleId}
+        </foreach>
+    </select>
+</mapper>

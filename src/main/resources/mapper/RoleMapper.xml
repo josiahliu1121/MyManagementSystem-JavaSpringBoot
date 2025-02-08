@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.skytakeaway.server.mapper.RoleMapper">
+    <select id="pageQuery" parameterType="map" resultType="com.skytakeaway.pojo.entity.Role">
+        SELECT * FROM role
+        <where>
+            <if test="roleName != '' and roleName != null">
+                and role_name like concat('%',#{roleName},'%')
+            </if>
+        </where>
+    </select>
+
+    <!-- Get role for multiple IDs -->
+    <select id="getByIds" parameterType="java.util.List" resultType="com.skytakeaway.pojo.entity.Role">
+        SELECT *
+        FROM role
+        WHERE id IN
+        <foreach collection="list" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+</mapper>

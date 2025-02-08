@@ -1,0 +1,18 @@
+sky:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://mysql-db:3306/management_system
+    username: root
+    password: 123
+  oss:
+    endpoint: http://minio:9000
+    access-key-id: minioadmin
+    access-key-secret: minioadmin
+    bucket-name: management-system
+  jwt:
+    #jwt sign key
+    secret-key: admin
+    #jwt expire time
+    ttl: 86400000
+    #token name from front end
+    token-name: token

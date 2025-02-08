@@ -1,0 +1,9 @@
+docker run -d \
+  --name mysql-db \
+  --network my-management-system-network \
+  -p 3306:3306 \
+  -e TZ=Asia/Malaysia \
+  -e MYSQL_ROOT_PASSWORD=123 \
+  -v my-management-system-data:/var/lib/mysql \
+  -v $(pwd)/my-management-system/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql \
+  mysql:8.0
